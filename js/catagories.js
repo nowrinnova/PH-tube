@@ -35,31 +35,47 @@ function loadVideos(){
   .then(videos => displayVideos(videos.videos))
 }
 function displayVideos(videos){
-  console.log(videos)
+  console.log(videos.length)
   const videoContainer=document.getElementById('video-container');
-  videoContainer.innerHTML=""
-  videos.forEach(element => {
-    const videoCard=document.createElement('div');
-    videoCard.classList='card card-compact mx-auto'
-    videoCard.innerHTML=` 
-    <figure class="w-[230px] h-[120px]">
-        <img class="object-cover w-full h-full" src=${element.thumbnail} alt="Shoes" />
-      </figure>
-      <div class="flex gap-3 py-4">
-      <div>
-      <img class="w-[25px] h-[25px] rounded-full object-cover" src=${element.authors[0].profile_picture}/></div>
-      <div>
-        <h2 class="font-bold">${element.title}</h2>
-      <div class="flex gap-3">
-        <p class=" text-sm text-slate-500">${element.authors[0].profile_name}</p>
-        ${element.authors[0].verified===true ?`<img class="w-[15px]" src=" https://img.icons8.com/?size=100&id=98A4yZTt9abw&format=png&color=000000" />`:'' }
+  videoContainer.innerHTML="";
+  const videosArrayLength=videos.length;
+  if(videosArrayLength>=1){
+    videos.forEach(element => {
+      const videoCard=document.createElement('div');
+      videoCard.classList='card card-compact mx-auto'
+      videoCard.innerHTML=` 
+      <figure class="w-[230px] h-[120px]">
+          <img class="object-cover w-full h-full" src=${element.thumbnail} alt="Shoes" />
+        </figure>
+        <div class="flex gap-3 py-4">
+        <div>
+        <img class="w-[25px] h-[25px] rounded-full object-cover" src=${element.authors[0].profile_picture}/></div>
+        <div>
+          <h2 class="font-bold">${element.title}</h2>
+        <div class="flex gap-3">
+          <p class=" text-sm text-slate-500">${element.authors[0].profile_name}</p>
+          ${element.authors[0].verified===true ?`<img class="w-[15px]" src=" https://img.icons8.com/?size=100&id=98A4yZTt9abw&format=png&color=000000" />`:'' }
+          </div>
+          <p class=" text-sm text-slate-500">${element.others.views}</p>
         </div>
-        <p class=" text-sm text-slate-500">${element.others.views}</p>
-      </div>
-      </div>
-      `
-      videoContainer.appendChild(videoCard)
-  });
+        </div>
+        `
+        videoContainer.appendChild(videoCard)
+    });
+  }
+  else{
+    const emptyVideo=document.getElementById('empty-video')
+    const videoCard=document.createElement('div');
+    // videoCard.classList="grid grid-cols-1 mx-auto"
+    // videoContainer.classList.remove('md:grid-cols-3 lg:grid-cols-4')
+    videoCard.innerHTML=` 
+        <div class="mx-auto" ><img class="mx-auto" src="./assets/Icon.png" alt="">
+        <h2 class="text-center text-3xl font-bold py-5 " >OOPS ! Sorry ,There is no Content</h2>
+        </div>
+        `
+        emptyVideo.appendChild(videoCard)
+  }
+  
 }
 
 loadCatagories()
