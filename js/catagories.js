@@ -4,13 +4,25 @@ function loadCatagories(){
       .then(response => response.json())
       .then(json => displayCatagories(json))
 }
+
+//load categories wise video then the button is clicked
+function loadCategoriesVideo(category_id){
+  fetch(`https://openapi.programming-hero.com/api/phero-tube/category/${category_id}`)
+  .then(response => response.json())
+  .then(data => displayVideos(data.category))
+}
+
+//display the category wise button
 function displayCatagories(categories){
   const categoriesArray=categories.categories;
   const categoriesContainer =document.getElementById('catagories-container');
   
   categoriesArray.forEach(element => {
     const categoriesButton=document.createElement('button');
-    categoriesButton.classList='btn'
+    categoriesButton.classList='btn';
+    categoriesButton.onclick=()=>{
+      loadCategoriesVideo(element.category_id);
+    }
     categoriesButton.innerText=`${element.category}`;
     categoriesContainer.append(categoriesButton)
   }
@@ -20,13 +32,13 @@ function displayCatagories(categories){
 function loadVideos(){
   fetch('https://openapi.programming-hero.com/api/phero-tube/videos')
   .then(response => response.json())
-  .then(videos => displayVideos(videos))
+  .then(videos => displayVideos(videos.videos))
 }
 function displayVideos(videos){
-  const videoArray=videos.videos;
-  const videoContainer=document.getElementById('video-container')
-  videoArray.forEach(element => {
-    console.log(element)
+  console.log(videos)
+  const videoContainer=document.getElementById('video-container');
+  videoContainer.innerHTML=""
+  videos.forEach(element => {
     const videoCard=document.createElement('div');
     videoCard.classList='card card-compact mx-auto'
     videoCard.innerHTML=` 
@@ -50,37 +62,5 @@ function displayVideos(videos){
   });
 }
 
-// {category_id: '1001', video_id: 'aaaa', thumbnail: 'https://i.ibb.co/L1b6xSq/shape.jpg', title: 'Shape of You', authors: Array(1), …}
-// authors
-// : 
-// Array(1)
-// 0
-// : 
-// {profile_picture: 'https://i.ibb.co/D9wWRM6/olivia.jpg', profile_name: 'Olivia Mitchell', verified: ''}
-// length
-// : 
-// 1
-// [[Prototype]]
-// : 
-// Array(0)
-// category_id
-// : 
-// "1001"
-// description
-// : 
-// "Dive into the rhythm of 'Shape of You,' a captivating track that blends pop sensibilities with vibrant beats. Created by Olivia Mitchell, this song has already gained 100K views since its release. With its infectious melody and heartfelt lyrics, 'Shape of You' is perfect for fans looking for an uplifting musical experience. Let the music take over as Olivia's vocal prowess and unique style create a memorable listening journey."
-// others
-// : 
-// {views: '100K', posted_date: '16278'}
-// thumbnail
-// : 
-// "https://i.ibb.co/L1b6xSq/shape.jpg"
-// title
-// : 
-// "Shape of You"
-// video_id
-// : 
-// "aaaa"
-//calling the the function when loading the page
 loadCatagories()
 loadVideos()
